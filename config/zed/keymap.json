@@ -1,0 +1,71 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+// https://github.com/zed-industries/zed/blob/main/assets/keymaps/default-macos.json
+[
+  {
+    "context": "Workspace",
+    "bindings": {}
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      // "j k": ["workspace::SendKeystrokes", "escape"]
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      // Menu
+      "space e": "workspace::ToggleLeftDock",
+      "space o": "project_panel::ToggleFocus",
+      // Git
+      "space g g": [
+        "task::Spawn",
+        { "task_name": "start lazygit", "reveal_target": "center" }
+      ]
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      // Terminal
+      "space t h": "terminal_panel::ToggleFocus",
+      // Neo-Tree
+      // https://github.com/nvim-neo-tree/neo-tree.nvim/blob/main/doc/neo-tree.txt
+      "l": "project_panel::Open",
+      "a": "project_panel::NewFile",
+      "A": "project_panel::NewDirectory"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+    "bindings": {
+      // Menu
+      "space e": "workspace::ToggleLeftDock",
+      "space o": "project_panel::ToggleFocus",
+      // Git
+      "space g g": [
+        "task::Spawn",
+        { "task_name": "start lazygit", "reveal_target": "center" }
+      ],
+      // Terminal
+      "space t h": "terminal_panel::ToggleFocus",
+      // Buffers
+      "] b": "pane::ActivateNextItem",
+      "[ b": "pane::ActivatePreviousItem",
+      "space c": "pane::CloseActiveItem",
+      "space b c": ["pane::CloseInactiveItems", { "close_pinned": false }],
+      "space b C": ["pane::CloseAllItems", { "close_pinned": false }],
+      "space b r": ["pane::CloseItemsToTheRight", { "close_pinned": false }]
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {}
+  }
+]
