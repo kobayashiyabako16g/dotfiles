@@ -19,5 +19,6 @@ pkgs.buildEnv {
     pkgs.ripgrep
     pkgs.bat
     pkgs.lazygit
+    pkgs.kubectl
   ];
 }
