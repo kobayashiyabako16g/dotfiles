@@ -20,5 +20,6 @@ pkgs.buildEnv {
     pkgs.bat
     pkgs.lazygit
     pkgs.kubectl
+    pkgs.k3d
   ];
 }
