@@ -7,7 +7,17 @@
 
   outputs = { self, nixpkgs }: let
     system = "aarch64-darwin";
-    pkgs = nixpkgs.legacyPackages.${system};
+
+    pkgs = import nixpkgs {
+        system = system;
+        overlays = [
+          (final: prev: {
+            k3d = prev.k3d.override {
+              k3sVersion = "1.32.5-k3s1";
+            };
+          })
+        ];
+      };
 
     # 分割した定義を読み込む
     devTools = import ./nix/pkgs/dev-tools.nix { inherit pkgs; };
