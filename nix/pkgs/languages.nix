@@ -5,5 +5,6 @@ pkgs.buildEnv {
   paths = [
     pkgs.rustup
     pkgs.go
+    pkgs.deno
   ];
 }
