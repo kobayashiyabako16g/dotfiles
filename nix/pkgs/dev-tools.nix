@@ -21,5 +21,6 @@ pkgs.buildEnv {
     pkgs.lazygit
     pkgs.kubectl
     pkgs.k3d
+    pkgs.neovim
   ];
 }
