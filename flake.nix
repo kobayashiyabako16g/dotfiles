@@ -22,16 +22,15 @@
     # 分割した定義を読み込む
     devTools = import ./nix/pkgs/dev-tools.nix { inherit pkgs; };
     languages = import ./nix/pkgs/languages.nix { inherit pkgs; };
-    nvim = import ./nix/pkgs/nvim.nix { inherit pkgs; };
+
   in {
     packages.${system} = {
       dev-tools = devTools;
       languages = languages;
-      nvim = nvim;
 
       everything = pkgs.buildEnv {
         name = "everything";
-        paths = [ devTools languages nvim ];
+        paths = [ devTools languages ];
       };
     };
   };
