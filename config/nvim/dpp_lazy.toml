@@ -1,3 +1,2 @@
 [[plugins]]
 repo = "nvim-neo-tree/neo-tree.nvim"
-on_cmd = "Neotree"
