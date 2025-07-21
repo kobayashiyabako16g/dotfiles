@@ -22,5 +22,8 @@ pkgs.buildEnv {
     pkgs.kubectl
     pkgs.k3d
     pkgs.neovim
+    pkgs.posting
+    pkgs.bottom
+    pkgs.htop
   ];
 }
