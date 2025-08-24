@@ -7,6 +7,9 @@ depends = [
   "nvim-web-devicons",
 ]
 on_cmd = ["Neotree"]
+lua_source = '''
+  require("config/neotree")
+'''
 
 [[plugins]]
 repo = "nvim-lua/plenary.nvim"
