@@ -29,7 +29,7 @@ import type {
 import type { Denops } from "jsr:@denops/std@~7.6.0";
 
 console.log("dpp.ts is loaded!");
-const BASE_PATH = "~/.config/nvim";
+const BASE_PATH = Deno.env.get("HOME") + "/.config/nvim";
 
 export class Config extends BaseConfig {
   override async config(args: {
@@ -66,6 +66,7 @@ export class Config extends BaseConfig {
 
       const tomlPromises = [
         { path: `${BASE_PATH}/dpp.toml`, lazy: false },
+        { path: `${BASE_PATH}/dpp_lazy.toml`, lazy: true },
       ].map((tomlFile) =>
         action.callback({
           denops: args.denops,

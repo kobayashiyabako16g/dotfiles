@@ -1,19 +1,6 @@
-vim.g.mapleader = ' '
-vim.keymap.set('n', '<Space>', '<Nop>', { silent = true })
-vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { desc = "Toggle Explorer" })
-vim.keymap.set("n", "<leader>o", function()
-  if vim.bo.filetype == "neo-tree" then
-    vim.cmd.wincmd "p"
-  else
-    vim.cmd.Neotree "focus"
-  end
-end, { desc = "Toggle Explorer Focus" })
-
 if vim.loader then
   vim.loader.enable()
 end
-
-
 
 -- start prelude
 local dppBase = vim.fn.expand("~/.cache/dpp")
@@ -77,7 +64,9 @@ end, { nargs = 0 })
 vim.api.nvim_create_user_command("DppClearstate", function(val)
   dpp.clear_state()
 end, { nargs = 0 })
-
+vim.api.nvim_create_user_command("DppGet", function(val)
+  dpp.get()
+end, { nargs = 0 })
 
 vim.opt.laststatus = 3
 vim.opt.cursorline = true
@@ -85,5 +74,9 @@ vim.opt.cursorline = true
 vim.cmd("set completeopt+=noinsert")
 
 vim.opt.virtualedit = "none"
+vim.cmd([[const mapleader = " "]])
 
 vim.opt.expandtab = true
+
+-- keymap
+require("config/keymap")
