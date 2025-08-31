@@ -1,7 +1,5 @@
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-on_event = ['BufEnter']
-# on_event = ['BufRead', 'CursorHold']
 lua_source = """
   require("config/lsp")
 """
@@ -10,3 +8,28 @@ lua_source = """
 [[plugins]]
 repo = 'folke/lazydev.nvim'
 on_source = 'nvim-lspconfig'
+
+[[plugins]]
+repo = "nvim-treesitter/nvim-treesitter"
+on_source = 'nvim-lspconfig'
+on_event = ["BufRead", "BufNewFile"]
+lua_source = """
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "go", "gomod" },
+  highlight = { enable = true },
+}
+"""
+
+[[plugins]]
+repo = "onsails/lspkind.nvim"
+on_source = 'nvim-lspconfig'
+lua_source = """
+local cmp = require'cmp'
+local lspkind = require'lspkind'
+
+cmp.setup{
+  formatting = {
+    format = lspkind.cmp_format({with_text = true, maxwidth = 50})
+  }
+}
+"""
