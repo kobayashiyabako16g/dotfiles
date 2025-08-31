@@ -19,7 +19,3 @@ repo = "Shougo/dpp-protocol-git"
 
 [[plugins]]
 repo = 'vim-denops/denops.vim'
-
-# ---- others ----
-[[plugins]]
-repo = 'folke/lazydev.nvim'

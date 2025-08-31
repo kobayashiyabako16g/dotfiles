@@ -56,6 +56,7 @@ vim.api.nvim_create_autocmd("User", {
 vim.cmd("filetype indent plugin on")
 vim.cmd("syntax on")
 
+-- dpp commands
 vim.api.nvim_create_user_command("DppInstall", "call dpp#async_ext_action('installer', 'install')", { nargs = 0 })
 vim.api.nvim_create_user_command("DppUpdate", "call dpp#async_ext_action('installer', 'update')", { nargs = 0 })
 vim.api.nvim_create_user_command("DppMakestate", function(val)
