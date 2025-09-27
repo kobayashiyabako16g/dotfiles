@@ -81,3 +81,9 @@ vim.opt.expandtab = true
 
 -- keymap
 require("config/keymap")
+
+-- lsp
+require("config/lsp/cmp")
+require('config/lsp')
+require('config/lsp/handlers').setup()
+require('config/lsp/treesitter')

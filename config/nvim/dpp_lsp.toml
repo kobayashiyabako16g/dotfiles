@@ -1,35 +1,39 @@
 [[plugins]]
-repo = 'neovim/nvim-lspconfig'
-lua_source = """
-  require("config/lsp")
-"""
+repo = "neovim/nvim-lspconfig"
+depends = [
+  "lazydev.nvim",
+  "nvim-treesitter",
+  "nvim-cmp",
+  "cmp-nvim-lsp",
+  "lspkind.nvim",
+]
 
 # ---- others ----
 [[plugins]]
-repo = 'folke/lazydev.nvim'
-on_source = 'nvim-lspconfig'
+repo = "folke/lazydev.nvim"
 
+# --- treesitter
 [[plugins]]
 repo = "nvim-treesitter/nvim-treesitter"
-on_source = 'nvim-lspconfig'
-on_event = ["BufRead", "BufNewFile"]
-lua_source = """
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "go", "gomod" },
-  highlight = { enable = true },
-}
-"""
+
+[[plugins]]
+repo = "nvim-treesitter/nvim-treesitter-textobjects"
+depends = [
+   "nvim-treesitter"
+]
+
+[[plugins]]
+repo = "nvim-treesitter/nvim-treesitter-context"
+depends = [
+   "nvim-treesitter"
+]
+
+# --- cmp
+[[plugins]]
+repo = "hrsh7th/nvim-cmp"
+
+[[plugins]]
+repo = "hrsh7th/cmp-nvim-lsp"
 
 [[plugins]]
 repo = "onsails/lspkind.nvim"
-on_source = 'nvim-lspconfig'
-lua_source = """
-local cmp = require'cmp'
-local lspkind = require'lspkind'
-
-cmp.setup{
-  formatting = {
-    format = lspkind.cmp_format({with_text = true, maxwidth = 50})
-  }
-}
-"""

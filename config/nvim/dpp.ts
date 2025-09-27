@@ -2,7 +2,6 @@ import type {
   ContextBuilder,
   ExtOptions,
   Plugin,
-  ProtocolName,
 } from "jsr:@shougo/dpp-vim@~4.5.0/types";
 import type { Protocol } from "jsr:@shougo/dpp-vim@~4.5.0/protocol";
 import type { Dpp } from "jsr:@shougo/dpp-vim@~4.5.0/dpp";
@@ -66,7 +65,7 @@ export class Config extends BaseConfig {
 
       const tomlPromises = [
         { path: `${BASE_PATH}/dpp.toml`, lazy: false },
-        { path: `${BASE_PATH}/dpp_lsp.toml`, lazy: true },
+        { path: `${BASE_PATH}/dpp_lsp.toml`, lazy: false },
         { path: `${BASE_PATH}/dpp_lazy.toml`, lazy: true },
       ].map((tomlFile) =>
         action.callback({
