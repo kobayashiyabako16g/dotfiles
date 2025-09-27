@@ -7,10 +7,9 @@ local function go_on_attach(client, bufnr)
   common.on_attach(client, bufnr)
 
   if client.name == "gopls" then
-    -- 保存時にimportを整理とフォーマット
+    -- 保存時にimportを整理とフォーマット（該当バッファのみ）
     vim.api.nvim_create_autocmd("BufWritePre", {
-      pattern = "*.go",
-      buffer = bufnr,
+      buffer = bufnr, -- patternを削除してbufferのみ使用
       callback = function()
         local params = vim.lsp.util.make_range_params()
         params.context = { only = { "source.organizeImports" } }
@@ -42,16 +41,20 @@ M.setup = function(lspconfig)
     root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
     settings = {
       gopls = {
+        -- 基本設定のみ
         experimentalPostfixCompletions = true,
+        staticcheck = true,
+
+        -- 重要なアナライザーのみ明示的に有効化
         analyses = {
-          unusedparams = true,
           shadow = true,
-          fieldalignment = true,
           nilness = true,
+          unusedparams = true,
           unusedwrite = true,
           useany = true,
         },
-        staticcheck = true,
+
+        -- インレイヒント
         hints = {
           assignVariableTypes = true,
           compositeLiteralFields = true,
@@ -61,24 +64,15 @@ M.setup = function(lspconfig)
           parameterNames = true,
           rangeVariableTypes = true,
         },
-        codelenses = {
-          gc_details = false,
-          generate = true,
-          regenerate_cgo = true,
-          run_govulncheck = true,
-          test = true,
-          tidy = true,
-          upgrade_dependency = true,
-          vendor = true,
-        },
+
+        -- 補完設定
         completeUnimported = true,
         usePlaceholders = true,
         matcher = "Fuzzy",
-        diagnosticsDelay = "500ms",
-        symbolMatcher = "fuzzy",
-        symbolStyle = "dynamic",
-        vulncheck = "Imports",
+
+        -- その他
         semanticTokens = true,
+        vulncheck = "Imports",
       },
     },
   }
