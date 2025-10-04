@@ -10,19 +10,19 @@ enable-normalization-opposite-orientation-for-nested-containers = false
 [mode.main.binding]
 # alt-enter = 'exec-and-forget open -n /System/Applications/Utilities/Terminal.app'
 
-alt-j = 'focus left'
-alt-k = 'focus down'
-alt-l = 'focus up'
-alt-semicolon = 'focus right'
+alt-h = 'focus right'
+alt-l = 'focus left'
+alt-k = 'focus up'
+alt-j = 'focus down'
 
-alt-shift-j = 'move left'
-alt-shift-k = 'move down'
-alt-shift-l = 'move up'
-alt-shift-semicolon = 'move right'
+alt-shift-h = 'move right'
+alt-shift-l = 'move left'
+alt-shift-k = 'move up'
+alt-shift-j = 'move down'
 
 # Consider using 'join-with' command as a 'split' replacement if you want to enable normalizations
-alt-h = 'split horizontal'
-alt-v = 'split vertical'
+alt-minus = 'split horizontal'
+alt-sectionSign = 'split vertical'
 
 alt-f = 'fullscreen'
 
