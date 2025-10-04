@@ -25,5 +25,6 @@ pkgs.buildEnv {
     pkgs.posting
     pkgs.bottom
     pkgs.htop
+    pkgs.devenv
   ];
 }
