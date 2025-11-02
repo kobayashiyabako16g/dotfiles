@@ -13,3 +13,10 @@ map("n", "<Leader>o", function()
     vim.cmd.Neotree "focus"
   end
 end, { desc = "Toggle Explorer Focus" })
+
+
+-- telescope
+map('n', '<Leader>ff', "<cmd>Telescope find_files<CR>", { noremap = true, silent = true })
+map('n', '<Leader>fg', "<cmd>Telescope live_grep<CR>", { noremap = true, silent = true })
+map('n', '<Leader>fb', "<cmd>Telescope buffers<CR>", { noremap = true, silent = true })
+map('n', '<Leader>fh', "<cmd>Telescope help_tags<CR>", { noremap = true, silent = true })

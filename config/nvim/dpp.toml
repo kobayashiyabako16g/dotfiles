@@ -1,4 +1,5 @@
 # ---- dpps ----
+# https://github.com/Shougo/dpp.vim/blob/main/doc/dpp.txt
 [[plugins]]
 repo = "Shougo/dpp.vim"
 

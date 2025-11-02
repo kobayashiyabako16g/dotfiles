@@ -19,3 +19,10 @@ repo = "MunifTanjim/nui.nvim"
 
 [[plugins]]
 repo = "nvim-tree/nvim-web-devicons"
+
+# --- fzf
+[[plugins]]
+repo = "nvim-telescope/telescope.nvim"
+depends = [
+  "plenary.nvim",
+]
