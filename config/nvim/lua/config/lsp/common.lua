@@ -1,5 +1,23 @@
 local M = {}
 
+-- LSPツールのPATH設定
+function M.setup_tools_path()
+  local config_dir = vim.fn.stdpath('config')
+  local node_tools_bin = config_dir .. '/lua/config/lsp/servers/node/node_modules/.bin'
+
+  if vim.fn.isdirectory(node_tools_bin) == 1 then
+    vim.env.PATH = node_tools_bin .. ':' .. vim.env.PATH
+  end
+end
+
+-- プロジェクトのnode_modules/.binにもPATHを通す
+function M.setup_project_bin()
+  local node_modules_bin = vim.fn.getcwd() .. '/node_modules/.bin'
+  if vim.fn.isdirectory(node_modules_bin) == 1 then
+    vim.env.PATH = node_modules_bin .. ':' .. vim.env.PATH
+  end
+end
+
 M.on_attach = function(client, bufnr)
   -- 基本的なキーマッピング
   local bufopts = { noremap = true, silent = true, buffer = bufnr }
