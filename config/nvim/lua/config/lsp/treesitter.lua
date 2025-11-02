@@ -18,6 +18,7 @@ require('nvim-treesitter.configs').setup {
     "yaml",
     "markdown",
     "bash",
+    "markdown_inline",
   },
 
   -- パーサーを同期的にインストール（起動時のみ）
