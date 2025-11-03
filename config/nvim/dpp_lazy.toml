@@ -26,3 +26,14 @@ repo = "nvim-telescope/telescope.nvim"
 depends = [
   "plenary.nvim",
 ]
+
+# --- code companion
+[[plugins]]
+repo = "olimorris/codecompanion.nvim"
+depends = [
+  "plenary.nvim",
+]
+
+# --- markdown
+[[plugins]]
+repo = "MeanderingProgrammer/render-markdown.nvim"
