@@ -26,5 +26,6 @@ pkgs.buildEnv {
     pkgs.bottom
     pkgs.htop
     pkgs.devenv
+    pkgs.tree-sitter
   ];
 }
