@@ -79,6 +79,8 @@ vim.cmd([[const mapleader = " "]])
 
 vim.opt.expandtab = true
 
+-- color
+require("config/color")
 -- keymap
 require("config/keymap")
 

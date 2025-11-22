@@ -1,0 +1,4 @@
+# --- color
+[[plugins]]
+repo = "catppuccin/nvim"
+name = "catppuccin"
