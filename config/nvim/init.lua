@@ -73,6 +73,7 @@ vim.opt.laststatus = 3
 vim.opt.cursorline = true
 
 vim.cmd("set completeopt+=noinsert")
+vim.opt.clipboard = "unnamedplus"
 
 vim.opt.virtualedit = "none"
 vim.cmd([[const mapleader = " "]])
