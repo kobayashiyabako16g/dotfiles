@@ -2,3 +2,9 @@
 [[plugins]]
 repo = "catppuccin/nvim"
 name = "catppuccin"
+
+[[plugins]]
+repo = "akinsho/toggleterm.nvim"
+lua_source = '''
+  require("config/toggleTerm")
+'''
