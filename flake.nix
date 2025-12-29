@@ -22,15 +22,17 @@
     # 分割した定義を読み込む
     devTools = import ./nix/pkgs/dev-tools.nix { inherit pkgs; };
     languages = import ./nix/pkgs/languages.nix { inherit pkgs; };
+    font = import ./nix/pkgs/font.nix { inherit pkgs; };
 
   in {
     packages.${system} = {
       dev-tools = devTools;
       languages = languages;
+      font = font;
 
       everything = pkgs.buildEnv {
         name = "everything";
-        paths = [ devTools languages ];
+        paths = [ devTools languages font ];
       };
     };
   };
