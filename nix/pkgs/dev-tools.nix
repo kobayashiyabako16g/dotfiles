@@ -27,5 +27,6 @@ pkgs.buildEnv {
     pkgs.htop
     pkgs.devenv
     pkgs.tree-sitter
+    pkgs.zoxide
   ];
 }
