@@ -1,4 +1,6 @@
---Neo Tree configs
+-- ###########
+-- Neo Tree configs
+-- ###########
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
@@ -13,6 +15,9 @@ map("n", "<Leader>o", function()
     vim.cmd.Neotree "focus"
   end
 end, { desc = "Toggle Explorer Focus" })
+-- Tab navigation
+map("n", "]t", "<cmd>tabnext<CR>", { desc = "Next Tab" })
+map("n", "[t", "<cmd>tabprevious<CR>", { desc = "Previous Tab" })
 
 -- ###########
 -- telescope
