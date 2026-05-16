@@ -7,23 +7,172 @@
 // from the command palette.
 // https://github.com/zed-industries/zed/blob/main/assets/keymaps/default-macos.json
 [
+  // ─── Workspace / Global ──────────────────────────────────────────────
   {
     "context": "Workspace",
-    "bindings": {}
-  },
-  {
-    "context": "Editor",
     "bindings": {
-      // "j k": ["workspace::SendKeystrokes", "escape"]
+      "ctrl-\\": "terminal_panel::ToggleFocus"
     }
   },
+
+  // ─── Normal + Visual (共通) ───────────────────────────────────────────
+  {
+    "context": "Editor && (vim_mode == normal || vim_mode == visual) && !VimWaiting && !menu",
+    "bindings": {
+      // --- Find (space f) ---
+      "space f f": "file_finder::Toggle",            // Find File
+      "space f r": "projects::OpenRecent",           // Recent Files
+      "space f w": "pane::DeploySearch",             // Find Word (grep)
+      "space f b": "tab_switcher::Toggle",           // Find Buffer
+
+      // --- Git (space g) ---
+      "space g g": [
+        "task::Spawn",
+        { "task_name": "start lazygit", "reveal_target": "center" }
+      ],                                             // Lazygit
+      "space g s": "git_panel::ToggleFocus",         // Git Status panel
+      "space g b": "editor::ToggleGitBlame",         // Git Blame
+      "space g d": "editor::ToggleSelectedDiffHunks", // Git Diff hunk
+      "] h": "editor::GoToHunk",                    // Next Hunk
+      "[ h": "editor::GoToPreviousHunk",            // Prev Hunk
+
+      // --- UI Toggles (space u) ---
+      "space u w": "editor::ToggleSoftWrap",        // Toggle Wrap
+      "space u i": "editor::ToggleInlayHints",      // Toggle Inlay Hints
+      "space u z": "workspace::ToggleCenteredLayout", // Zen mode
+
+      // --- Search (space s) ---
+      "space s w": "pane::DeploySearch",            // Search Word
+      "space s b": "buffer_search::Deploy",         // Search Buffer
+      "space s s": "outline::Toggle",               // Document Symbols
+      "space s S": "project_symbols::Toggle",       // Workspace Symbols
+
+      // --- Markdown (space m) ---
+      "space m p": "markdown::OpenPreview",
+      "space m P": "markdown::OpenPreviewToTheSide",
+
+      // --- AI (space a) ---
+      "space a c": "agent::ToggleFocus",            // AI Chat
+
+      // go to file (gf)
+      "g f": "editor::OpenExcerpts"
+    }
+  },
+
+  // ─── Normal Mode のみ ─────────────────────────────────────────────────
+  {
+    "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+    "bindings": {
+      // --- Explorer / UI (space e / o) ---
+      "space e": "workspace::ToggleLeftDock",       // Toggle Explorer
+      "space o": "project_panel::ToggleFocus",      // Focus Explorer
+
+      // --- Terminal (space t) ---
+      "space t h": "terminal_panel::ToggleFocus",   // Horizontal terminal
+      "space t f": "workspace::NewCenterTerminal",  // Floating terminal
+
+      // --- Buffers (space b / ] b / [ b) ---
+      "] b": "pane::ActivateNextItem",
+      "[ b": "pane::ActivatePreviousItem",
+      "shift-l": "pane::ActivateNextItem",          // AstroNvim: Shift+L
+      "shift-h": "pane::ActivatePreviousItem",      // AstroNvim: Shift+H
+      "space c": "pane::CloseActiveItem",           // Close buffer
+      "space b d": "pane::CloseActiveItem",
+      "space b c": ["pane::CloseInactiveItems", { "close_pinned": false }],
+      "space b C": ["pane::CloseAllItems", { "close_pinned": false }],
+      "space b r": ["pane::CloseItemsToTheRight", { "close_pinned": false }],
+      "space b o": "pane::CloseOtherItems",
+
+      // --- LSP / Code (space l / space c) ---
+      "space l f": "editor::Format",               // Format Document
+      "space l r": "editor::Rename",               // Rename
+      "space l a": "editor::ToggleCodeActions",    // Code Actions
+      "space l d": "editor::GoToDiagnostic",       // Line Diagnostic
+      "space l D": "diagnostics::Deploy",          // All Diagnostics panel
+      "space l s": "outline::Toggle",              // Document Symbols
+      "space l S": "project_symbols::Toggle",      // Workspace Symbols
+      "space l i": "editor::ToggleInlayHints",     // Toggle Inlay Hints
+      "space c a": "editor::ToggleCodeActions",    // Code Actions (alt)
+      "space c r": "editor::Rename",               // Rename (alt)
+      "space /": "pane::DeploySearch",             // Comment / Search
+
+      // --- Diagnostics (space x) ---
+      "space x x": "diagnostics::Deploy",          // Trouble/Diagnostics
+
+      // --- Go-to (g_) ---
+      "g d": "editor::GoToDefinition",
+      "g D": "editor::GoToDeclaration",
+      "g i": "editor::GoToImplementation",
+      "g t": "editor::GoToTypeDefinition",
+      "g r": "editor::FindAllReferences",
+      "] d": "editor::GoToDiagnostic",
+      "[ d": "editor::GoToPreviousDiagnostic",
+      "] e": "editor::GoToDiagnostic",             // Next Error
+      "[ e": "editor::GoToPreviousDiagnostic",     // Prev Error
+
+      // --- Hover (Shift+K like AstroNvim) ---
+      "shift-k": "editor::Hover",
+
+      // --- Window navigation (ctrl-hjkl) ---
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown",
+
+      // --- Save ---
+      "ctrl-s": "workspace::Save",
+
+      // --- Quick file open ---
+      "space space": "file_finder::Toggle",
+
+      // --- Reveal in panel ---
+      "space e": "pane::RevealInProjectPanel"
+    }
+  },
+
+  // ─── Insert Mode ──────────────────────────────────────────────────────
+  {
+    "context": "Editor && vim_mode == insert && !menu",
+    "bindings": {
+      "j k": "vim::NormalBefore",                  // jk → Escape
+      "j j": "vim::NormalBefore"                   // jj → Escape
+    }
+  },
+
+  // ─── Visual Mode ──────────────────────────────────────────────────────
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
+    "bindings": {
+      "g c": "editor::ToggleComments",             // Comment selection
+      "shift-j": "editor::MoveLineDown",           // Move line down
+      "shift-k": "editor::MoveLineUp"              // Move line up
+    }
+  },
+
+  // ─── Operator: c_ ---
+  {
+    "context": "Editor && vim_operator == c",
+    "bindings": {
+      "c": "vim::CurrentLine",
+      "r": "editor::Rename",
+      "a": "editor::ToggleCodeActions"
+    }
+  },
+
+  // ─── Which-key: space を vim のデフォルト動作から切り離す ───────────────
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "space": null
+    }
+  },
+
+  // ─── Project Panel ────────────────────────────────────────────────────
   {
     "context": "ProjectPanel",
     "bindings": {
-      // Menu
       "space e": "workspace::ToggleLeftDock",
       "space o": "project_panel::ToggleFocus",
-      // Git
       "space g g": [
         "task::Spawn",
         { "task_name": "start lazygit", "reveal_target": "center" }
@@ -33,40 +182,52 @@
   {
     "context": "ProjectPanel && not_editing",
     "bindings": {
-      // Terminal
-      "space t h": "terminal_panel::ToggleFocus",
-      // Neo-Tree
-      // https://github.com/nvim-neo-tree/neo-tree.nvim/blob/main/doc/neo-tree.txt
       "l": "project_panel::Open",
       "a": "project_panel::NewFile",
-      "A": "project_panel::NewDirectory"
-    }
-  },
-  {
-    "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
-    "bindings": {
-      // Menu
-      "space e": "workspace::ToggleLeftDock",
-      "space o": "project_panel::ToggleFocus",
-      // Git
-      "space g g": [
-        "task::Spawn",
-        { "task_name": "start lazygit", "reveal_target": "center" }
-      ],
-      // Terminal
+      "A": "project_panel::NewDirectory",
+      "r": "project_panel::Rename",
+      "d": "project_panel::Delete",
+      "x": "project_panel::Cut",
+      "c": "project_panel::Copy",
+      "p": "project_panel::Paste",
+      "q": "workspace::ToggleLeftDock",
       "space t h": "terminal_panel::ToggleFocus",
-      // Buffers
-      "] b": "pane::ActivateNextItem",
-      "[ b": "pane::ActivatePreviousItem",
-      "space c": "pane::CloseActiveItem",
-      "space b c": ["pane::CloseInactiveItems", { "close_pinned": false }],
-      "space b C": ["pane::CloseAllItems", { "close_pinned": false }],
-      "space b r": ["pane::CloseItemsToTheRight", { "close_pinned": false }]
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
     }
   },
+
+  // ─── Terminal ─────────────────────────────────────────────────────────
   {
     "context": "Terminal",
-    "bindings": {}
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown"
+    }
+  },
+
+  // ─── Dock / Panel navigation ──────────────────────────────────────────
+  {
+    "context": "Dock",
+    "bindings": {
+      "ctrl-w h": "workspace::ActivatePaneLeft",
+      "ctrl-w l": "workspace::ActivatePaneRight",
+      "ctrl-w k": "workspace::ActivatePaneUp",
+      "ctrl-w j": "workspace::ActivatePaneDown"
+    }
+  },
+
+  // ─── Empty Pane ───────────────────────────────────────────────────────
+  {
+    "context": "EmptyPane || SharedScreen",
+    "bindings": {
+      "space space": "file_finder::Toggle",
+      "space f p": "projects::OpenRecent"
+    }
   }
 ]
 
