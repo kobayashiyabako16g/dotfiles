@@ -2,19 +2,16 @@ local common = require('config.lsp.common')
 
 local M = {}
 
-function M.setup(lspconfig)
-  lspconfig.ts_ls.setup({
+function M.setup()
+  vim.lsp.config('ts_ls', {
     capabilities = common.capabilities,
-    root_dir = lspconfig.util.root_pattern('package.json', 'tsconfig.json', '.git'),
+    root_markers = { 'package.json', 'tsconfig.json', '.git' },
     on_attach = function(client, bufnr)
-      -- TypeScriptのフォーマットを無効化（Biomeを使うため）
       client.server_capabilities.documentFormattingProvider = false
       client.server_capabilities.documentRangeFormattingProvider = false
 
-      -- 共通のon_attachを呼ぶ
       common.on_attach(client, bufnr)
 
-      -- TypeScript固有のキーバインド
       local opts = { noremap = true, silent = true, buffer = bufnr }
       vim.keymap.set('n', '<leader>oi', function()
         vim.lsp.buf.execute_command({
@@ -48,6 +45,7 @@ function M.setup(lspconfig)
       }
     }
   })
+  vim.lsp.enable('ts_ls')
 end
 
 return M

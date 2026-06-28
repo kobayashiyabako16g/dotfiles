@@ -21,7 +21,21 @@ for _, server in ipairs(servers) do
   server_config.setup(lspconfig)
 end
 
-require('config/lsp/handlers').setup()
+vim.lsp.config('*', {
+  capabilities = common.capabilities,
+  handlers = {
+    -- ホバーウィンドウのボーダー設定
+    ['textDocument/hover'] = function(err, result, ctx, opts)
+      opts = vim.tbl_extend('force', opts or {}, { border = 'rounded' })
+      vim.lsp.handlers.hover(err, result, ctx, opts)
+    end,
+    -- シグネチャヘルプのボーダー設定
+    ['textDocument/signatureHelp'] = function(err, result, ctx, opts)
+      opts = vim.tbl_extend('force', opts or {}, { border = 'rounded' })
+      vim.lsp.handlers.signature_help(err, result, ctx, opts)
+    end,
+  },
+})
 
 -- Treesitter設定
 require('config/lsp/treesitter')

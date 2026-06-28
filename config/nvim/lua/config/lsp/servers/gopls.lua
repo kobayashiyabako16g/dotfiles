@@ -32,13 +32,13 @@ local function go_on_attach(client, bufnr)
   end
 end
 
-M.setup = function(lspconfig)
-  lspconfig.gopls.setup {
+M.setup = function()
+  vim.lsp.config('gopls', {
     on_attach = go_on_attach,
     capabilities = common.capabilities,
     cmd = { "gopls" },
     filetypes = { "go", "gomod", "gowork", "gotmpl" },
-    root_dir = lspconfig.util.root_pattern("go.work", "go.mod", ".git"),
+    root_markers = { "go.work", "go.mod", ".git" },
     settings = {
       gopls = {
         -- 基本設定のみ
@@ -75,7 +75,8 @@ M.setup = function(lspconfig)
         vulncheck = "Imports",
       },
     },
-  }
+  })
+  vim.lsp.enable('gopls')
 end
 
 return M
