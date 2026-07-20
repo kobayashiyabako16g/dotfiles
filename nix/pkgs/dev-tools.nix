@@ -9,6 +9,7 @@ pkgs.buildEnv {
     pkgs.gawk
     pkgs.gnupg
     pkgs.tmux
+    pkgs.herdr
     pkgs.coreutils
     pkgs.libpq
     pkgs.netcat

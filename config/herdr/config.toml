@@ -1,0 +1,58 @@
+# =========================
+# prefixキーを C-s に変更（元 C-b から）
+# =========================
+[keys]
+prefix = "ctrl+s"
+
+# vi風のペイン移動（herdrはデフォルトで h/j/k/l がナビゲート用）
+focus_pane_left  = "prefix+h"
+focus_pane_down  = "prefix+j"
+focus_pane_up    = "prefix+k"
+focus_pane_right = "prefix+l"
+
+# ペインのリサイズ（tmuxの resize-pane に近いのは resize_mode）
+resize_mode = "prefix+r"
+
+# 分割（tmuxの \ / - に寄せる。直接キーなので注意）
+split_vertical   = "prefix+backslash"       # 縦分割(左右に並ぶ) ≒ tmuxの split -h
+split_horizontal = "prefix+minus"   # 横分割(上下に並ぶ) ≒ tmuxの split -v
+
+# 新規タブ（tmuxの新規ウィンドウに相当）
+new_tab = "prefix+c"
+
+# ズーム（tmuxの resize-pane -Z 相当）
+zoom = "prefix+z"
+
+# コピーモードに入る（vi風のコピー操作はherdrはマウスドラッグ選択が基本。
+# キーボードでは prefix+[ でコピーモードに入り、その後vi風に操作可能）
+copy_mode = "prefix+["
+
+# =========================
+# ターミナル / スクロールバック
+# =========================
+[terminal]
+default_shell = "" # 未設定なら $SHELL を使用（tmuxの default-shell 相当）
+
+[advanced]
+# tmuxの history-limit 5000（行）に近い値。herdrはバイト指定なので目安で調整
+scrollback_limit_bytes = 10485760
+
+# =========================
+# マウス
+# =========================
+[ui]
+mouse_capture = true   # tmuxの set -g mouse on 相当（herdrはデフォルトでON）
+
+# =========================
+# テーマ（Catppuccinはそのまま）
+# =========================
+[theme]
+name = "catppuccin"
+# フレーバーを指定したい場合（mocha相当）
+[theme.custom]
+accent = "#a6e3a1"
+
+# =========================
+# その他
+# =========================
+onboarding = false
