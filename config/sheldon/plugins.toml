@@ -32,17 +32,25 @@ use = [
     "pure.zsh",
 ]
 
-# zsh/defers配下のファイルは遅延読み込みしない
+# zsh/defers配下のファイルは遅延読み込み
 [plugins.local-defers]
 local = "~/dotfiles/zsh"
 use = ["defer/*.zsh"]
 apply = ["defer"]
 
-# zsh配下のファイルは遅延読み込みする
+# zsh配下のファイルは遅延読み込みしない
 [plugins.local-sync]
 local = "~/dotfiles/zsh"
 use = ["{!defer,*}.zsh"]
 apply = ["source"]
+
+# 補完のファイルは遅延読み込みしない
+[plugins.local-completion]
+local = "~/dotfiles/zsh"
+use = ["completion.zsh"]
+apply = ["source"]
+# compinit が走る前に、自前の補完関数ディレクトリを fpath に追加する
+hooks.pre = 'fpath=(~/dotfiles/zsh/completions $fpath)'
 
 [plugins.zsh-vi-mode]
 github = "jeffreytse/zsh-vi-mode"
