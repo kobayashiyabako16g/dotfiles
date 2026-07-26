@@ -29,5 +29,6 @@ pkgs.buildEnv {
     pkgs.devenv
     pkgs.tree-sitter
     pkgs.zoxide
+    pkgs.typst
   ];
 }
