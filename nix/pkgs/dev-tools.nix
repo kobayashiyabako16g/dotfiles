@@ -30,5 +30,6 @@ pkgs.buildEnv {
     pkgs.tree-sitter
     pkgs.zoxide
     pkgs.typst
+    pkgs.tdf
   ];
 }
