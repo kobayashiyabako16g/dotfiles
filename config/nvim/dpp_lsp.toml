@@ -15,9 +15,11 @@ repo = "folke/lazydev.nvim"
 # --- treesitter
 [[plugins]]
 repo = "nvim-treesitter/nvim-treesitter"
+rev = "main"
 
 [[plugins]]
 repo = "nvim-treesitter/nvim-treesitter-textobjects"
+rev = "main"
 depends = [
    "nvim-treesitter"
 ]

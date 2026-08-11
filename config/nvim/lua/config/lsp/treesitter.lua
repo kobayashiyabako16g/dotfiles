@@ -1,137 +1,123 @@
-require('nvim-treesitter.configs').setup {
-  -- インストールする言語パーサー
-  ensure_installed = {
-    "lua",
-    "vim",
-    "vimdoc",
-    "javascript",
-    "typescript",
-    "python",
-    "rust",
-    "go",
-    "gomod",
-    "gowork",
-    "gotmpl",
-    "html",
-    "css",
-    "json",
-    "yaml",
-    "markdown",
-    "bash",
-    "markdown_inline",
+-- インストールする言語パーサー
+local ensure_installed = {
+  "lua",
+  "vim",
+  "vimdoc",
+  "javascript",
+  "typescript",
+  "python",
+  "rust",
+  "go",
+  "gomod",
+  "gowork",
+  "gotmpl",
+  "html",
+  "css",
+  "json",
+  "yaml",
+  "markdown",
+  "bash",
+  "markdown_inline",
+}
+
+require('nvim-treesitter').setup {}
+
+-- 不足しているパーサーをインストール
+do
+  local installed = {}
+  for _, lang in ipairs(require('nvim-treesitter').get_installed('parsers')) do
+    installed[lang] = true
+  end
+  local to_install = vim.tbl_filter(function(lang)
+    return not installed[lang]
+  end, ensure_installed)
+  if #to_install > 0 then
+    require('nvim-treesitter').install(to_install)
+  end
+end
+
+-- 構文ハイライト・インデントを有効化（パーサーが無い場合は無視）
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = '*',
+  callback = function(args)
+    if pcall(vim.treesitter.start) then
+      vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+  end,
+})
+
+-- テキストオブジェクト設定
+require('nvim-treesitter-textobjects').setup {
+  select = {
+    lookahead = true,
   },
-
-  -- パーサーを同期的にインストール（起動時のみ）
-  sync_install = false,
-
-  -- 不足しているパーサーを自動インストール
-  auto_install = true,
-
-  -- 無視する言語（パーサーがない場合など）
-  ignore_install = {},
-
-  -- 構文ハイライト設定
-  highlight = {
-    enable = true,
-    -- 特定のファイルタイプで無効化する場合
-    -- disable = { "c", "rust" },
-    -- vim正規表現も併用する場合（重い処理の場合に有効）
-    additional_vim_regex_highlighting = false,
-  },
-
-  -- インデント設定
-  indent = {
-    enable = true,
-    -- 特定の言語で無効化する場合
-    -- disable = { "python" },
-  },
-
-  -- インクリメンタル選択
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
-    },
-  },
-
-  -- テキストオブジェクト設定
-  textobjects = {
-    select = {
-      enable = true,
-
-      -- 自動的に次のテキストオブジェクトにジャンプ
-      lookahead = true,
-
-      keymaps = {
-        -- 関数
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        -- クラス
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-        -- 条件文
-        ["ai"] = "@conditional.outer",
-        ["ii"] = "@conditional.inner",
-        -- ループ
-        ["al"] = "@loop.outer",
-        ["il"] = "@loop.inner",
-        -- パラメータ/引数
-        ["aa"] = "@parameter.outer",
-        ["ia"] = "@parameter.inner",
-        -- コメント
-        ["a/"] = "@comment.outer",
-        ["i/"] = "@comment.inner",
-      },
-    },
-
-    -- テキストオブジェクト間の移動
-    move = {
-      enable = true,
-      set_jumps = true, -- ジャンプリストに追加
-      goto_next_start = {
-        ["]m"] = "@function.outer",
-        ["]]"] = "@class.outer",
-      },
-      goto_next_end = {
-        ["]M"] = "@function.outer",
-        ["]["] = "@class.outer",
-      },
-      goto_previous_start = {
-        ["[m"] = "@function.outer",
-        ["[["] = "@class.outer",
-      },
-      goto_previous_end = {
-        ["[M"] = "@function.outer",
-        ["[]"] = "@class.outer",
-      },
-    },
-
-    -- スワップ（入れ替え）
-    swap = {
-      enable = true,
-      swap_next = {
-        ["<leader>a"] = "@parameter.inner",
-      },
-      swap_previous = {
-        ["<leader>A"] = "@parameter.inner",
-      },
-    },
-
-    -- LSPインターフェース（gd、grなどで使用）
-    lsp_interop = {
-      enable = true,
-      border = 'none',
-      floating_preview_opts = {},
-      peek_definition_code = {
-        ["<leader>df"] = "@function.outer",
-        ["<leader>dF"] = "@class.outer",
-      },
-    },
+  move = {
+    set_jumps = true,
   },
 }
+
+local ts_select = require('nvim-treesitter-textobjects.select')
+local ts_move = require('nvim-treesitter-textobjects.move')
+local ts_swap = require('nvim-treesitter-textobjects.swap')
+
+local function select_textobject(query)
+  return function()
+    ts_select.select_textobject(query, 'textobjects')
+  end
+end
+
+-- 関数
+vim.keymap.set({ 'x', 'o' }, 'af', select_textobject('@function.outer'))
+vim.keymap.set({ 'x', 'o' }, 'if', select_textobject('@function.inner'))
+-- クラス
+vim.keymap.set({ 'x', 'o' }, 'ac', select_textobject('@class.outer'))
+vim.keymap.set({ 'x', 'o' }, 'ic', select_textobject('@class.inner'))
+-- 条件文
+vim.keymap.set({ 'x', 'o' }, 'ai', select_textobject('@conditional.outer'))
+vim.keymap.set({ 'x', 'o' }, 'ii', select_textobject('@conditional.inner'))
+-- ループ
+vim.keymap.set({ 'x', 'o' }, 'al', select_textobject('@loop.outer'))
+vim.keymap.set({ 'x', 'o' }, 'il', select_textobject('@loop.inner'))
+-- パラメータ/引数
+vim.keymap.set({ 'x', 'o' }, 'aa', select_textobject('@parameter.outer'))
+vim.keymap.set({ 'x', 'o' }, 'ia', select_textobject('@parameter.inner'))
+-- コメント
+vim.keymap.set({ 'x', 'o' }, 'a/', select_textobject('@comment.outer'))
+vim.keymap.set({ 'x', 'o' }, 'i/', select_textobject('@comment.inner'))
+
+-- テキストオブジェクト間の移動
+vim.keymap.set({ 'n', 'x', 'o' }, ']m', function()
+  ts_move.goto_next_start('@function.outer', 'textobjects')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, ']]', function()
+  ts_move.goto_next_start('@class.outer', 'textobjects')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, ']M', function()
+  ts_move.goto_next_end('@function.outer', 'textobjects')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, '][', function()
+  ts_move.goto_next_end('@class.outer', 'textobjects')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, '[m', function()
+  ts_move.goto_previous_start('@function.outer', 'textobjects')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, '[[', function()
+  ts_move.goto_previous_start('@class.outer', 'textobjects')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, '[M', function()
+  ts_move.goto_previous_end('@function.outer', 'textobjects')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, '[]', function()
+  ts_move.goto_previous_end('@class.outer', 'textobjects')
+end)
+
+-- スワップ（入れ替え）
+vim.keymap.set('n', '<leader>a', function()
+  ts_swap.swap_next('@parameter.inner')
+end)
+vim.keymap.set('n', '<leader>A', function()
+  ts_swap.swap_previous('@parameter.inner')
+end)
 
 -- treesitter-context設定（現在のコンテキストを上部に表示）
 require('treesitter-context').setup {
