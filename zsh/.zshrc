@@ -5,3 +5,6 @@ export EDITOR=vim
 
 # [zoxide]
 eval "$(zoxide init zsh --cmd cd)"
+
+# [devenv]
+eval "$(devenv hook zsh)"
