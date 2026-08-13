@@ -22,10 +22,10 @@ map("n", "[t", "<cmd>tabprevious<CR>", { desc = "Previous Tab" })
 -- ###########
 -- telescope
 -- ###########
-map('n', '<Leader>ff', "<cmd>Telescope find_files<CR>", { noremap = true, silent = true })
-map('n', '<Leader>fg', "<cmd>Telescope live_grep<CR>", { noremap = true, silent = true })
-map('n', '<Leader>fb', "<cmd>Telescope buffers<CR>", { noremap = true, silent = true })
-map('n', '<Leader>fh', "<cmd>Telescope help_tags<CR>", { noremap = true, silent = true })
+map('n', '<Leader>ff', "<cmd>Telescope find_files<CR>", vim.tbl_extend("force", opts, { desc = "Find Files" }))
+map('n', '<Leader>fg', "<cmd>Telescope live_grep<CR>", vim.tbl_extend("force", opts, { desc = "Live Grep" }))
+map('n', '<Leader>fb', "<cmd>Telescope buffers<CR>", vim.tbl_extend("force", opts, { desc = "Find Buffers" }))
+map('n', '<Leader>fh', "<cmd>Telescope help_tags<CR>", vim.tbl_extend("force", opts, { desc = "Help Tags" }))
 
 
 
@@ -48,7 +48,6 @@ function _LAZYGIT_TOGGLE()
   lazygit:toggle()
 end
 
-local map = vim.keymap.set
 -- ノーマルモードに戻る
 map("t", "<esc>", [[<C-\><C-n>]])
 map("t", "jj", [[<C-\><C-n>]])
@@ -60,22 +59,22 @@ map("t", "<C-k>", [[<C-\><C-n><C-w>k]])
 map("t", "<C-l>", [[<C-\><C-n><C-w>l]])
 
 -- lazygit
-map("n", "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", { silent = true, noremap = true })
+map("n", "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", { silent = true, noremap = true, desc = "Lazygit" })
 
 -- terminal 1〜3
-map("n", "<leader>1", "<cmd>1ToggleTerm<CR>")
-map("n", "<leader>2", "<cmd>2ToggleTerm<CR>")
-map("n", "<leader>3", "<cmd>3ToggleTerm<CR>")
+map("n", "<leader>1", "<cmd>1ToggleTerm<CR>", { desc = "Terminal 1" })
+map("n", "<leader>2", "<cmd>2ToggleTerm<CR>", { desc = "Terminal 2" })
+map("n", "<leader>3", "<cmd>3ToggleTerm<CR>", { desc = "Terminal 3" })
 
 -- 分割方向切替
 map("n", "<leader>th", function()
   require("toggleterm").toggle(0, 15, vim.loop.cwd(), "horizontal")
-end)
+end, { desc = "Terminal Horizontal" })
 
 map("n", "<leader>tv", function()
   require("toggleterm").toggle(0, 80, vim.loop.cwd(), "vertical")
-end)
+end, { desc = "Terminal Vertical" })
 
 map("n", "<leader>tf", function()
   require("toggleterm").toggle(0, nil, vim.loop.cwd(), "float")
-end)
+end, { desc = "Terminal Float" })

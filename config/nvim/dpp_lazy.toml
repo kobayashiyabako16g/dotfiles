@@ -33,6 +33,10 @@ repo = "olimorris/codecompanion.nvim"
 depends = [
   "plenary.nvim",
 ]
+on_cmd = ["CodeCompanion", "CodeCompanionChat", "CodeCompanionActions", "CodeCompanionCmd"]
+lua_source = '''
+  require("config/codecompanion")
+'''
 
 # --- markdown
 [[plugins]]

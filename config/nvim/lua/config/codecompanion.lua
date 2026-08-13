@@ -12,21 +12,9 @@ require('codecompanion').setup({
       },
     },
   },
-  adapters = {
-    acp = {
-      anthropic = function()
-        return require("codecompanion.adapters").extend("anthropic", {
-          env = {
-            api_key = "cmd:op read op://develop/claude/Agent/api-key --no-newline",
-          },
-        })
-      end,
-    }
-  },
   strategies = {
     chat = {
-      adapter = "anthropic",
-      model = "claude-sonnet-4-20250514"
+      adapter = "claude_code",
     },
   }
 })
