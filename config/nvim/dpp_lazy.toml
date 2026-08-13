@@ -37,6 +37,3 @@ depends = [
 # --- markdown
 [[plugins]]
 repo = "MeanderingProgrammer/render-markdown.nvim"
-
-[[plugins]]
-repo = "folke/which-key.nvim"

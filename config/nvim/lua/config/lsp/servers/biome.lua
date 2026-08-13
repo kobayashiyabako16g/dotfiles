@@ -48,92 +48,85 @@ local function find_biome_config()
   return nil
 end
 
--- Biomeでフォーマット
-function M.format()
+-- Biomeサブコマンドを共通の手順で実行する
+-- opts.write: 実行前にバッファを保存し、実行後にリロードするか
+-- opts.on_success / opts.on_failure: 結果を受け取る通知処理
+local function run_biome(subcommand, opts)
+  opts = opts or {}
+
   local file = vim.fn.expand('%:p')
   local biome_cmd = find_biome_cmd()
   local config_path = find_biome_config()
 
-  -- プロジェクトにbiome.jsonがない場合は実行しない
   if not config_path then
+    if opts.warn_if_missing then
+      vim.notify('No biome.json found in project', vim.log.levels.WARN)
+    end
     return
   end
 
-  local view = vim.fn.winsaveview()
-  vim.cmd('write')
+  local view
+  if opts.write then
+    view = vim.fn.winsaveview()
+    vim.cmd('write')
+  end
 
   local config_dir = vim.fn.fnamemodify(config_path, ':h')
-  local cmd = string.format('cd %s && %s format --write %s',
+  local cmd = string.format('cd %s && %s %s %s',
     vim.fn.shellescape(config_dir),
     biome_cmd,
+    subcommand,
     vim.fn.shellescape(file))
 
   local result = vim.fn.system(cmd)
 
   if vim.v.shell_error ~= 0 then
-    vim.notify('Biome format failed: ' .. result, vim.log.levels.ERROR)
+    opts.on_failure(result)
   else
-    vim.cmd('edit!')
-    vim.fn.winrestview(view)
+    opts.on_success(result)
+    if opts.write then
+      vim.cmd('edit!')
+      vim.fn.winrestview(view)
+    end
   end
+end
+
+-- Biomeでフォーマット
+function M.format()
+  run_biome('format --write', {
+    write = true,
+    on_failure = function(result)
+      vim.notify('Biome format failed: ' .. result, vim.log.levels.ERROR)
+    end,
+    on_success = function() end,
+  })
 end
 
 -- Biomeでlint
 function M.lint()
-  local file = vim.fn.expand('%:p')
-  local biome_cmd = find_biome_cmd()
-  local config_path = find_biome_config()
-
-  if not config_path then
-    vim.notify('No biome.json found in project', vim.log.levels.WARN)
-    return
-  end
-
-  local config_dir = vim.fn.fnamemodify(config_path, ':h')
-  local cmd = string.format('cd %s && %s lint %s',
-    vim.fn.shellescape(config_dir),
-    biome_cmd,
-    vim.fn.shellescape(file))
-
-  local output = vim.fn.system(cmd)
-
-  if vim.v.shell_error ~= 0 then
-    vim.notify(output, vim.log.levels.WARN)
-  else
-    vim.notify('No lint errors', vim.log.levels.INFO)
-  end
+  run_biome('lint', {
+    warn_if_missing = true,
+    on_failure = function(output)
+      vim.notify(output, vim.log.levels.WARN)
+    end,
+    on_success = function()
+      vim.notify('No lint errors', vim.log.levels.INFO)
+    end,
+  })
 end
 
 -- Biomeでcheck
 function M.check()
-  local file = vim.fn.expand('%:p')
-  local biome_cmd = find_biome_cmd()
-  local config_path = find_biome_config()
-
-  if not config_path then
-    vim.notify('No biome.json found in project', vim.log.levels.WARN)
-    return
-  end
-
-  local view = vim.fn.winsaveview()
-  vim.cmd('write')
-
-  local config_dir = vim.fn.fnamemodify(config_path, ':h')
-  local cmd = string.format('cd %s && %s check --write %s',
-    vim.fn.shellescape(config_dir),
-    biome_cmd,
-    vim.fn.shellescape(file))
-
-  local result = vim.fn.system(cmd)
-
-  if vim.v.shell_error ~= 0 then
-    vim.notify('Biome check found issues: ' .. result, vim.log.levels.WARN)
-  else
-    vim.notify('Biome check passed', vim.log.levels.INFO)
-  end
-
-  vim.cmd('edit!')
-  vim.fn.winrestview(view)
+  run_biome('check --write', {
+    write = true,
+    warn_if_missing = true,
+    on_failure = function(result)
+      vim.notify('Biome check found issues: ' .. result, vim.log.levels.WARN)
+    end,
+    on_success = function()
+      vim.notify('Biome check passed', vim.log.levels.INFO)
+    end,
+  })
 end
 
 -- セットアップ（lspconfigは不要）

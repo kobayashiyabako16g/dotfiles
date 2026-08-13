@@ -31,5 +31,6 @@ pkgs.buildEnv {
     pkgs.zoxide
     pkgs.typst
     pkgs.tdf
+    pkgs.git-wt
   ];
 }

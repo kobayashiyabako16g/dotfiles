@@ -8,3 +8,9 @@ repo = "akinsho/toggleterm.nvim"
 lua_source = '''
   require("config/toggleTerm")
 '''
+
+[[plugins]]
+repo = "folke/which-key.nvim"
+lua_source = '''
+  require("config/whichkey")
+'''
