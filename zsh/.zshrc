@@ -8,3 +8,6 @@ eval "$(zoxide init zsh --cmd cd)"
 
 # [devenv]
 eval "$(devenv hook zsh)"
+
+#[git-wt]
+eval "$(git wt --init zsh)"
