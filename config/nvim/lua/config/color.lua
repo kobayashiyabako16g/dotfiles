@@ -7,6 +7,7 @@ require('catppuccin').setup({
     telescope = true,
     cmp = true,
     gitsigns = true,
+    bufferline = true,
   },
 })
 vim.cmd.colorscheme("catppuccin-mocha")

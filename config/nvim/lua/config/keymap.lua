@@ -20,6 +20,36 @@ map("n", "]t", "<cmd>tabnext<CR>", { desc = "Next Tab" })
 map("n", "[t", "<cmd>tabprevious<CR>", { desc = "Previous Tab" })
 
 -- ###########
+-- bufferline (AstroNvim風タブ操作)
+-- ###########
+map("n", "]b", "<cmd>BufferLineCycleNext<CR>", { desc = "Next Buffer" })
+map("n", "[b", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous Buffer" })
+map("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next Buffer" })
+map("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous Buffer" })
+map("n", "<leader>bp", "<cmd>BufferLinePick<CR>", { desc = "Pick Buffer" })
+
+-- フォーカス中のバッファだけを閉じる(ウィンドウ/nvim自体は閉じない)
+local function close_buffer(force)
+  local buf = vim.api.nvim_get_current_buf()
+  local listed = vim.tbl_filter(function(b)
+    return vim.api.nvim_buf_is_valid(b) and vim.bo[b].buflisted
+  end, vim.api.nvim_list_bufs())
+
+  if #listed > 1 then
+    vim.cmd("bprevious")
+  else
+    vim.cmd("enew")
+  end
+
+  vim.cmd((force and "bdelete! " or "silent! bdelete ") .. buf)
+end
+
+map("n", "<leader>bd", function() close_buffer(false) end, { desc = "Close Buffer" })
+map("n", "<leader>bD", function() close_buffer(true) end, { desc = "Force Close Buffer" })
+map("n", "<leader>b<", "<cmd>BufferLineMovePrev<CR>", { desc = "Move Buffer Left" })
+map("n", "<leader>b>", "<cmd>BufferLineMoveNext<CR>", { desc = "Move Buffer Right" })
+
+-- ###########
 -- telescope
 -- ###########
 map('n', '<Leader>ff', "<cmd>Telescope find_files<CR>", vim.tbl_extend("force", opts, { desc = "Find Files" }))

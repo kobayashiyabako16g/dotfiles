@@ -3,6 +3,16 @@
 repo = "catppuccin/nvim"
 name = "catppuccin"
 
+# --- bufferline (tabs like AstroNvim)
+[[plugins]]
+repo = "akinsho/bufferline.nvim"
+depends = [
+  "nvim-web-devicons",
+]
+lua_source = '''
+  require("config/bufferline")
+'''
+
 [[plugins]]
 repo = "akinsho/toggleterm.nvim"
 lua_source = '''

@@ -71,6 +71,7 @@ end, { nargs = 0 })
 
 vim.opt.laststatus = 3
 vim.opt.cursorline = true
+vim.opt.mouse = "a"
 
 vim.cmd("set completeopt+=noinsert")
 vim.opt.clipboard = "unnamedplus"
@@ -87,3 +88,4 @@ require("config/keymap")
 
 -- lsp
 require('config/lsp')
+
