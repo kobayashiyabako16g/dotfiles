@@ -14,7 +14,6 @@ pkgs.buildEnv {
     pkgs.libpq
     pkgs.netcat
     pkgs.sheldon
-    pkgs.direnv
     pkgs.sqlite
     pkgs.fzf
     pkgs.ripgrep
@@ -32,5 +31,7 @@ pkgs.buildEnv {
     pkgs.typst
     pkgs.tdf
     pkgs.git-wt
+    pkgs.direnv
+    pkgs.nix-direnv
   ];
 }
