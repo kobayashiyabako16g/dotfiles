@@ -33,5 +33,6 @@ pkgs.buildEnv {
     pkgs.git-wt
     pkgs.direnv
     pkgs.nix-direnv
+    pkgs.terminal-notifier
   ];
 }
