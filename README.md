@@ -15,6 +15,8 @@ GitHub の access token を Nix に渡す場合は、Git 管理外の `/etc/nix/
 ```sh
 echo 'access-tokens = github.com=<token>' | sudo tee /etc/nix/access-tokens.conf
 sudo chmod 600 /etc/nix/access-tokens.conf
+# nix コマンドはユーザー権限で読むため所有者を自分にする
+sudo chown "$USER" /etc/nix/access-tokens.conf
 ```
 
 ## 構成
