@@ -42,3 +42,13 @@ Temporary Items
 
 # Nix の user 設定 (access-tokens を含むため管理外)
 config/nix/
+
+# herdr は config dir に runtime ファイル (ログ・ソケット・セッション状態) を書き出すため config.toml のみ管理
+config/herdr/*
+!config/herdr/config.toml
+
+# Zed は config dir にバックアップや prompts DB を書き出すため設定ファイルのみ管理
+config/zed/*
+!config/zed/settings.json
+!config/zed/keymap.json
+!config/zed/tasks.json
