@@ -43,6 +43,7 @@ scrollback_limit_bytes = 10485760
 # =========================
 [ui]
 mouse_capture = true   # tmuxの set -g mouse on 相当（herdrはデフォルトでON）
+agent_panel_sort = "priority"
 
 # =========================
 # テーマ（Catppuccinはそのまま）
@@ -52,8 +53,3 @@ name = "catppuccin"
 # フレーバーを指定したい場合（mocha相当）
 [theme.custom]
 accent = "#a6e3a1"
-
-# =========================
-# その他
-# =========================
-onboarding = false
