@@ -39,3 +39,6 @@ Temporary Items
 *.icloud
 
 # End of https://www.toptal.com/developers/gitignore/api/macos
+
+# Nix の user 設定 (access-tokens を含むため管理外)
+config/nix/

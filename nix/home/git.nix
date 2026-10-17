@@ -1,0 +1,14 @@
+{ ... }:
+
+{
+  programs.git = {
+    enable = true;
+    settings = {
+      user = {
+        name = "kobayashiyabako16g";
+        email = "all.laisser.fair@gmail.com";
+      };
+      init.defaultBranch = "main";
+    };
+  };
+}
