@@ -1,40 +1,6 @@
--- インストールする言語パーサー
-local ensure_installed = {
-  "lua",
-  "vim",
-  "vimdoc",
-  "javascript",
-  "typescript",
-  "python",
-  "rust",
-  "go",
-  "gomod",
-  "gowork",
-  "gotmpl",
-  "html",
-  "css",
-  "json",
-  "yaml",
-  "markdown",
-  "bash",
-  "markdown_inline",
-}
-
 require('nvim-treesitter').setup {}
 
--- 不足しているパーサーをインストール
-do
-  local installed = {}
-  for _, lang in ipairs(require('nvim-treesitter').get_installed('parsers')) do
-    installed[lang] = true
-  end
-  local to_install = vim.tbl_filter(function(lang)
-    return not installed[lang]
-  end, ensure_installed)
-  if #to_install > 0 then
-    require('nvim-treesitter').install(to_install)
-  end
-end
+-- パーサーは Nix (nix/home/neovim.nix) で管理
 
 -- 構文ハイライト・インデントを有効化（パーサーが無い場合は無視）
 vim.api.nvim_create_autocmd('FileType', {

@@ -2,27 +2,16 @@
 
 local M = {}
 
--- Dotfiles内のBiomeコマンドパス
-local function get_dotfiles_biome()
-  local config_dir = vim.fn.stdpath('config')
-  return config_dir .. '/lua/config/lsp/servers/node/node_modules/.bin/biome'
-end
-
 -- プロジェクト内のBiomeコマンドパス
 local function get_project_biome()
   return vim.fn.getcwd() .. '/node_modules/.bin/biome'
 end
 
--- 使用するBiomeコマンドを決定（プロジェクト優先）
+-- 使用するBiomeコマンドを決定（プロジェクト優先、なければ Nix で入れた biome）
 local function find_biome_cmd()
   local project_biome = get_project_biome()
   if vim.fn.executable(project_biome) == 1 then
     return project_biome
-  end
-
-  local dotfiles_biome = get_dotfiles_biome()
-  if vim.fn.executable(dotfiles_biome) == 1 then
-    return dotfiles_biome
   end
 
   return 'biome'

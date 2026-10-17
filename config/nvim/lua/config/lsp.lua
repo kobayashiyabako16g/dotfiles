@@ -1,7 +1,6 @@
 local common = require('config/lsp/common')
 
 -- PATHの設定
-common.setup_tools_path()
 common.setup_project_bin()
 
 -- 診断設定を適用
