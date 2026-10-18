@@ -33,7 +33,7 @@
     "tool_permissions": {
       "default": "allow"
     },
-    "default_profile": "ask",
+    "default_profile": "write",
     "dock": "right",
     "default_model": {
       "effort": "high",
