@@ -23,6 +23,7 @@
     tdf
     git-wt
     terminal-notifier
+    pi-coding-agent
 
     # languages
     rustup
