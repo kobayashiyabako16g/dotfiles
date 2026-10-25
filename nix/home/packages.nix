@@ -27,7 +27,7 @@
 
     # languages
     rustup
-    go
+    go_1_27
     deno
 
     # font

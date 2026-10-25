@@ -4,8 +4,8 @@
   homebrew = {
     enable = true;
     onActivation = {
-      autoUpdate = false;
-      upgrade = false;
+      autoUpdate = true;
+      upgrade = true;
       # 動作確認後に "zap" にすると宣言外のパッケージを削除する
       cleanup = "none";
     };
