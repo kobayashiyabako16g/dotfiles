@@ -26,6 +26,7 @@
     pi-coding-agent
     uv
     pipx
+    ghq
 
     # languages
     rustup
