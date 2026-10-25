@@ -24,10 +24,13 @@
     git-wt
     terminal-notifier
     pi-coding-agent
+    uv
+    pipx
 
     # languages
     rustup
     go_1_27
+    nodejs_26
     deno
 
     # font

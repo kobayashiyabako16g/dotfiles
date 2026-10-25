@@ -29,12 +29,9 @@
       "gh"
       "arp-scan"
       "kompose"
-      "pipx"
       "pkg-config"
       "sqlfluff"
       "aws-sam-cli"
-      "uv"
-      "mise"
     ];
 
     casks = [

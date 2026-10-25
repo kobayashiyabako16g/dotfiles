@@ -69,8 +69,6 @@
         eval "$(git wt --init zsh)"
 
         # 遅延読み込み
-        # [mise]
-        zsh-defer eval "$(/opt/homebrew/bin/mise activate zsh)"
         # [Google Cloud]
         zsh-defer source "/opt/homebrew/share/google-cloud-sdk/path.zsh.inc"
         zsh-defer source "/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc"
