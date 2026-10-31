@@ -28,9 +28,7 @@
       # lsp
       nvim-lspconfig
       lazydev-nvim
-      nvim-cmp
-      cmp-nvim-lsp
-      lspkind-nvim
+      blink-cmp
 
       # treesitter
       (nvim-treesitter.withPlugins (p: with p; [
@@ -58,7 +56,13 @@
 
       # コマンド実行時に packadd する (lua/config/lazy.lua)
       { plugin = neo-tree-nvim; optional = true; }
-      { plugin = codecompanion-nvim; optional = true; }
+      {
+        # checkInputs の blink.cmp v2 は blink.lib 無しで require チェックに失敗するため除外する
+        plugin = codecompanion-nvim.overrideAttrs (old: {
+          nvimSkipModules = (old.nvimSkipModules or [ ]) ++ [ "codecompanion.providers.completion.blink.setup" ];
+        });
+        optional = true;
+      }
     ];
 
     extraPackages = with pkgs; [

@@ -38,7 +38,7 @@ M.on_attach = function(client, bufnr)
 end
 
 -- 共通のcapabilities
-M.capabilities = require('cmp_nvim_lsp').default_capabilities()
+M.capabilities = require('blink.cmp').get_lsp_capabilities()
 
 -- 診断設定
 M.setup_diagnostics = function()

@@ -5,7 +5,7 @@ require('catppuccin').setup({
     native_lsp = { enabled = true },
     nvimtree = true,
     telescope = true,
-    cmp = true,
+    blink_cmp = true,
     gitsigns = true,
     bufferline = true,
   },

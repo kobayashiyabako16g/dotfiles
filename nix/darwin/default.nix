@@ -5,7 +5,12 @@
 
   nixpkgs = {
     hostPlatform = "aarch64-darwin";
-    overlays = [ (import ../overlays.nix) ];
+    overlays = [
+      (import ../overlays.nix)
+      # vimPlugins.blink-lib / vimPlugins.blink-cmp (v2) を差し替える
+      self.inputs.blink-cmp.inputs.blink-lib.overlays.default
+      self.inputs.blink-cmp.overlays.default
+    ];
   };
 
   nix = {

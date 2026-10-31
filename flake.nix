@@ -11,9 +11,14 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # blink.cmp v2 (main ブランチ, 未リリース)
+    blink-cmp = {
+      url = "github:saghen/blink.cmp";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nix-darwin, home-manager }: let
+  outputs = { self, nixpkgs, nix-darwin, home-manager, blink-cmp }: let
     username = "kobayashishouta";
     hostname = "macbook";
   in {

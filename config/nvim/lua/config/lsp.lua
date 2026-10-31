@@ -39,5 +39,5 @@ vim.lsp.config('*', {
 -- Treesitter設定
 require('config/lsp/treesitter')
 
--- nvim-cmp設定
-require("config/lsp/cmp")
+-- blink.cmp設定
+require("config/lsp/blink")
