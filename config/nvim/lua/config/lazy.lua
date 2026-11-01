@@ -20,12 +20,21 @@ local function on_cmd(pack, cmds, setup)
       vim.cmd(string.format("%s%s %s", cmd, args.bang and "!" or "", args.args))
     end, { nargs = "*", bang = true, range = true })
   end
+
+  return load
 end
 
 on_cmd("neo-tree.nvim", { "Neotree" }, function()
   require("config/neotree")
 end)
 
-on_cmd("codecompanion.nvim", { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions", "CodeCompanionCmd" }, function()
+local load_codecompanion = on_cmd("codecompanion.nvim", {
+  "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions", "CodeCompanionCmd", "CodeCompanionCodeReview", "CodeCompanionCLI",
+}, function()
   require("config/codecompanion")
 end)
+
+-- Lua API から呼ぶキーマップ用に、コマンドを経由せず packadd できるようにする
+return {
+  codecompanion = load_codecompanion,
+}

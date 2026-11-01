@@ -108,3 +108,41 @@ end, { desc = "Terminal Vertical" })
 map("n", "<leader>tf", function()
   require("toggleterm").toggle(0, nil, vim.loop.cwd(), "float")
 end, { desc = "Terminal Float" })
+
+-- ###########
+-- codecompanion
+-- ###########
+local load_codecompanion = require("config/lazy").codecompanion
+
+-- optional プラグインなので、Lua API を呼ぶ前に packadd しておく
+local function cc()
+  load_codecompanion()
+  return require("codecompanion")
+end
+
+map({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<CR>", vim.tbl_extend("force", opts, { desc = "CodeCompanion: Actions" }))
+map({ "n", "v" }, "<Leader>a", function()
+  if vim.o.columns < 100 then
+    return cc().toggle({ window_opts = { layout = "float", width = vim.o.columns } })
+  end
+  cc().toggle({ window_opts = { layout = "vertical" } })
+end, vim.tbl_extend("force", opts, { desc = "CodeCompanion: Toggle" }))
+map({ "n", "v" }, "<LocalLeader>a", "<cmd>CodeCompanionCodeReview Comment<CR>", vim.tbl_extend("force", opts, { desc = "CodeCompanion: Code Review Comment" }))
+
+-- CLI agent
+map({ "n", "v" }, "<C-p>", function()
+  return cc().cli({ prompt = true })
+end, { desc = "CodeCompanion: Prompt CLI agent" })
+map({ "n", "v" }, "<LocalLeader>ca", function()
+  return cc().cli("#{this}", { focus = false })
+end, { desc = "CodeCompanion: Add context to CLI agent" })
+map("n", "<LocalLeader>cd", function()
+  return cc().cli("#{diagnostics} Can you fix these?", { focus = true, submit = true })
+end, { desc = "CodeCompanion: Send diagnostics to CLI agent" })
+map("n", "<LocalLeader>ct", function()
+  return cc().cli("#{terminal} Sharing the output from the terminal. Can you fix it?", { focus = false, submit = true })
+end, { desc = "CodeCompanion: Send terminal output to CLI agent" })
+
+-- Inline completions
+map("i", "<C-f>", function() cc().inline_accept_word() end, vim.tbl_extend("force", opts, { desc = "CodeCompanion: Accept word" }))
+map("i", "<C-l>", function() cc().inline_accept_line() end, vim.tbl_extend("force", opts, { desc = "CodeCompanion: Accept line" }))

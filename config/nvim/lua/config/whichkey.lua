@@ -9,4 +9,5 @@ wk.add({
   { "<leader>t", group = "Terminal" },
   { "<leader>w", group = "LSP Workspace" },
   { "<leader>g", group = "Git" },
+  { "<localleader>c", group = "CodeCompanion CLI" },
 })
