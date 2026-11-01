@@ -17,6 +17,7 @@
       toggleterm-nvim
       which-key-nvim
       render-markdown-nvim
+      gitsigns-nvim
 
       # libs
       plenary-nvim

@@ -61,6 +61,19 @@ map('n', '<Leader>fh', "<cmd>Telescope help_tags<CR>", vim.tbl_extend("force", o
 
 
 -- ###########
+-- gitsigns
+-- ###########
+map("n", "<LocalLeader>gn", function()
+  require("gitsigns").nav_hunk("next")
+end, vim.tbl_extend("force", opts, { desc = "Next Hunk" }))
+map("n", "<LocalLeader>gp", function()
+  require("gitsigns").nav_hunk("prev")
+end, vim.tbl_extend("force", opts, { desc = "Previous Hunk" }))
+map("n", "<LocalLeader>gb", function()
+  require("gitsigns").blame_line()
+end, vim.tbl_extend("force", opts, { desc = "Blame Line" }))
+
+-- ###########
 -- toggleterm
 -- ###########
 local Terminal = require("toggleterm.terminal").Terminal

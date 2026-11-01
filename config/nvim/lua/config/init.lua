@@ -22,6 +22,7 @@ require("config/color")
 
 -- plugins
 require("config/bufferline")
+require("config/gitsigns")
 require("config/toggleTerm")
 require("config/whichkey")
 require("config/lazy")
