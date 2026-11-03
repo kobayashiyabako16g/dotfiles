@@ -74,6 +74,12 @@ map("n", "<LocalLeader>gb", function()
 end, vim.tbl_extend("force", opts, { desc = "Blame Line" }))
 
 -- ###########
+-- aerial
+-- ###########
+map("n", "<Leader>s", "<cmd>AerialToggle!<CR>", vim.tbl_extend("force", opts, { desc = "Toggle Symbols Outline" }))
+map("n", "<LocalLeader>s", "<cmd>AerialNavToggle<CR>", vim.tbl_extend("force", opts, { desc = "Symbols Nav" }))
+
+-- ###########
 -- toggleterm
 -- ###########
 local Terminal = require("toggleterm.terminal").Terminal

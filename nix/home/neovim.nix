@@ -18,6 +18,7 @@
       which-key-nvim
       render-markdown-nvim
       gitsigns-nvim
+      aerial-nvim
 
       # libs
       plenary-nvim
