@@ -26,7 +26,6 @@
       "fluttergen/tap/fluttergen"
       "supabase/tap/supabase"
       "hashicorp/tap/terraform"
-      "gh"
       "arp-scan"
       "kompose"
       "pkg-config"
