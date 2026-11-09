@@ -27,11 +27,11 @@ fi
 # nix-darwin + home-manager
 if command -v darwin-rebuild >/dev/null; then
   echo "▶️ Applying nix-darwin configuration..."
-  sudo darwin-rebuild switch --flake "$DOTFILES_DIR#$HOSTNAME"
+  sudo darwin-rebuild switch --flake "$DOTFILES_DIR#$HOSTNAME" --impure
 else
   echo "▶️ Bootstrapping nix-darwin..."
   sudo nix --extra-experimental-features "nix-command flakes" \
-    run nix-darwin/master#darwin-rebuild -- switch --flake "$DOTFILES_DIR#$HOSTNAME"
+    run nix-darwin/master#darwin-rebuild -- switch --flake "$DOTFILES_DIR#$HOSTNAME" --impure
 fi
 
 echo "🎉 All done! Open a new terminal to load the environment."

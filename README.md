@@ -28,12 +28,12 @@ sudo chown "$USER" /etc/nix/access-tokens.conf
 ## Apply configuration
 
 ```sh
-sudo darwin-rebuild switch --flake ~/dotfiles
+sudo darwin-rebuild switch --flake ~/dotfiles --impure
 ```
 
 ## Update
 
 ```sh
 nix flake update
-sudo darwin-rebuild switch --flake ~/dotfiles
+sudo darwin-rebuild switch --flake ~/dotfiles --impure
 ```

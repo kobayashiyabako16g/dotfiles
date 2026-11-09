@@ -19,7 +19,14 @@
   };
 
   outputs = { self, nixpkgs, nix-darwin, home-manager, blink-cmp }: let
-    username = "kobayashishouta";
+    # 端末ごとにユーザー名が異なるため、sudo 実行元のユーザーを使う (--impure が必要)
+    username = let
+      sudoUser = builtins.getEnv "SUDO_USER";
+      user = if sudoUser != "" then sudoUser else builtins.getEnv "USER";
+    in
+      if user == "" || user == "root"
+      then throw "ユーザー名を取得できません。`sudo darwin-rebuild switch --flake ~/dotfiles --impure` で実行してください"
+      else user;
     hostname = "macbook";
   in {
     darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
