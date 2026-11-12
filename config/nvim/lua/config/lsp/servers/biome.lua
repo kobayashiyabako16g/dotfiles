@@ -2,6 +2,9 @@
 
 local M = {}
 
+-- プロジェクトに biome.json が無いときに使う個人デフォルト設定 (このファイルと同じディレクトリの biome.json)
+local default_config_dir = vim.fn.fnamemodify(debug.getinfo(1, 'S').source:sub(2), ':h')
+
 -- プロジェクト内のBiomeコマンドパス
 local function get_project_biome()
   return vim.fn.getcwd() .. '/node_modules/.bin/biome'
@@ -38,6 +41,7 @@ local function find_biome_config()
 end
 
 -- Biomeサブコマンドを共通の手順で実行する
+-- プロジェクトの biome.json を優先し、無ければ個人デフォルト設定を --config-path で渡す
 -- opts.write: 実行前にバッファを保存し、実行後にリロードするか
 -- opts.on_success / opts.on_failure: 結果を受け取る通知処理
 local function run_biome(subcommand, opts)
@@ -47,11 +51,13 @@ local function run_biome(subcommand, opts)
   local biome_cmd = find_biome_cmd()
   local config_path = find_biome_config()
 
-  if not config_path then
-    if opts.warn_if_missing then
-      vim.notify('No biome.json found in project', vim.log.levels.WARN)
-    end
-    return
+  local run_dir, config_arg
+  if config_path then
+    run_dir = vim.fn.fnamemodify(config_path, ':h')
+    config_arg = ''
+  else
+    run_dir = vim.fn.getcwd()
+    config_arg = '--config-path ' .. vim.fn.shellescape(default_config_dir)
   end
 
   local view
@@ -60,11 +66,11 @@ local function run_biome(subcommand, opts)
     vim.cmd('write')
   end
 
-  local config_dir = vim.fn.fnamemodify(config_path, ':h')
-  local cmd = string.format('cd %s && %s %s %s',
-    vim.fn.shellescape(config_dir),
+  local cmd = string.format('cd %s && %s %s %s %s',
+    vim.fn.shellescape(run_dir),
     biome_cmd,
     subcommand,
+    config_arg,
     vim.fn.shellescape(file))
 
   local result = vim.fn.system(cmd)
@@ -94,7 +100,6 @@ end
 -- Biomeでlint
 function M.lint()
   run_biome('lint', {
-    warn_if_missing = true,
     on_failure = function(output)
       vim.notify(output, vim.log.levels.WARN)
     end,
@@ -108,7 +113,6 @@ end
 function M.check()
   run_biome('check --write', {
     write = true,
-    warn_if_missing = true,
     on_failure = function(result)
       vim.notify('Biome check found issues: ' .. result, vim.log.levels.WARN)
     end,
@@ -132,7 +136,7 @@ function M.setup()
   vim.keymap.set('n', '<leader>bl', M.lint, { desc = 'Biome lint' })
   vim.keymap.set('n', '<leader>bc', M.check, { desc = 'Biome check' })
 
-  -- プロジェクトにbiome.jsonがある場合のみ自動フォーマット有効化
+  -- プロジェクトにbiome.jsonがある場合のみ自動フォーマット有効化 (個人デフォルトは手動コマンドのみ)
   if config_path then
     local biome_group = vim.api.nvim_create_augroup('BiomeFormat', { clear = true })
     vim.api.nvim_create_autocmd('BufWritePre', {

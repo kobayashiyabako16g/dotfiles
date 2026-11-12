@@ -13,6 +13,7 @@ local lspconfig = require('lspconfig')
 local servers = {
   'gopls',
   'ts_ls',
+  'biome',
 }
 
 for _, server in ipairs(servers) do

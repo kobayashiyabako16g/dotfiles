@@ -67,11 +67,10 @@
       }
     ];
 
-    extraPackages = with pkgs; [
+    # LSP は nix/pkgs/lsp で個別ビルドしたものを使う
+    extraPackages = with pkgs.lsp; [
       gopls
-      typescript
-      typescript-language-server
-      biome
+      node
     ];
 
     initLua = ''
