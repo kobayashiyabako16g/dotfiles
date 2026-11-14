@@ -28,6 +28,13 @@ on_cmd("neo-tree.nvim", { "Neotree" }, function()
   require("config/neotree")
 end)
 
+on_cmd("diffview-plus.nvim", {
+  "DiffviewOpen", "DiffviewToggle", "DiffviewFileHistory", "DiffviewDiffFiles", "DiffviewLog",
+  "DiffviewMergeFiles", "DiffviewDiffDirs",
+}, function()
+  require("diffview").setup({})
+end)
+
 local load_codecompanion = on_cmd("codecompanion.nvim", {
   "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions", "CodeCompanionCmd", "CodeCompanionCodeReview", "CodeCompanionCLI",
 }, function()

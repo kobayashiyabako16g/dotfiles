@@ -14,6 +14,7 @@ local servers = {
   'gopls',
   'ts_ls',
   'biome',
+  'rust_analyzer',
 }
 
 for _, server in ipairs(servers) do

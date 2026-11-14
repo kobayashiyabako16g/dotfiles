@@ -110,6 +110,12 @@ map("t", "<C-l>", [[<C-\><C-n><C-w>l]])
 -- lazygit
 map("n", "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", { silent = true, noremap = true, desc = "Lazygit" })
 
+-- diffview
+map("n", "<leader>gd", "<Cmd>DiffviewOpen<CR>", { desc = "Diffview: Open" })
+map("n", "<leader>gh", "<Cmd>DiffviewFileHistory %<CR>", { desc = "Diffview: File history" })
+map("n", "<leader>gH", "<Cmd>DiffviewFileHistory<CR>", { desc = "Diffview: Repo history" })
+map("n", "<leader>gq", "<Cmd>DiffviewClose<CR>", { desc = "Diffview: Close" })
+
 -- terminal 1〜3
 map("n", "<leader>1", "<cmd>1ToggleTerm<CR>", { desc = "Terminal 1" })
 map("n", "<leader>2", "<cmd>2ToggleTerm<CR>", { desc = "Terminal 2" })
@@ -165,3 +171,7 @@ end, { desc = "CodeCompanion: Send terminal output to CLI agent" })
 -- Inline completions
 map("i", "<C-f>", function() cc().inline_accept_word() end, vim.tbl_extend("force", opts, { desc = "CodeCompanion: Accept word" }))
 map("i", "<C-l>", function() cc().inline_accept_line() end, vim.tbl_extend("force", opts, { desc = "CodeCompanion: Accept line" }))
+
+-- ビジュアルモードでインデント後も選択を維持
+map("v", "<", "<gv", { desc = "Unindent" })
+map("v", ">", ">gv", { desc = "Indent" })

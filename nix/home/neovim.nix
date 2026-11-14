@@ -19,6 +19,8 @@
       render-markdown-nvim
       gitsigns-nvim
       aerial-nvim
+      flatten-nvim
+      vim-sleuth
 
       # libs
       plenary-nvim
@@ -58,6 +60,7 @@
 
       # コマンド実行時に packadd する (lua/config/lazy.lua)
       { plugin = neo-tree-nvim; optional = true; }
+      { plugin = diffview-plus-nvim; optional = true; }
       {
         # checkInputs の blink.cmp v2 は blink.lib 無しで require チェックに失敗するため除外する
         plugin = codecompanion-nvim.overrideAttrs (old: {
@@ -67,11 +70,11 @@
       }
     ];
 
-    # LSP は nix/pkgs/lsp で個別ビルドしたものを使う
-    extraPackages = with pkgs.lsp; [
+    # LSP は nix/pkgs/lsp で個別ビルドしたものを使う (rust-analyzer は nixpkgs のもの)
+    extraPackages = (with pkgs.lsp; [
       gopls
       node
-    ];
+    ]) ++ [ pkgs.rust-analyzer ];
 
     initLua = ''
       require("config")
