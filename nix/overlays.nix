@@ -2,10 +2,6 @@ final: prev: {
   # nixpkgs の更新と切り離してバージョン固定した LSP (nix/pkgs/lsp)
   lsp = final.callPackage ./pkgs/lsp { };
 
-  k3d = prev.k3d.override {
-    k3sVersion = "1.32.5-k3s1";
-  };
-
   ghq = prev.ghq.overrideAttrs (finalAttrs: _: {
     version = "1.11.2";
     src = prev.fetchFromGitHub {
