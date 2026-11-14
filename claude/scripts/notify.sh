@@ -9,7 +9,6 @@
 #   - jq                 (brew install jq)
 #   - omniwmctl          (OmniWM menu bar > "Install CLI to PATH")
 #   - OmniWM menu bar > "Enable IPC" must be ON
-#   - Claude.app installed (for the -sender icon lookup)
 #
 
 # Hooks run in a non-interactive shell that does not source your profile,
@@ -43,23 +42,39 @@ fi
 # --------------------------------------------------------------------------
 if command -v omniwmctl &>/dev/null; then
 
-    # Walk up the process tree to find the terminal app running this session.
-    term_pid=$$
-    while [ "$term_pid" -gt 1 ]; do
-        parent_pid=$(ps -o ppid= -p "$term_pid" 2>/dev/null | tr -d ' ')
-        [ -z "$parent_pid" ] && break
-        parent_name=$(ps -o comm= -p "$parent_pid" 2>/dev/null)
-        if [[ "$parent_name" =~ (Terminal|iTerm|Alacritty|kitty|WezTerm|Ghostty) ]]; then
-            term_pid=$parent_pid
-            break
-        fi
-        term_pid=$parent_pid
-    done
+    # Walk up the process tree from $1 to find the terminal app.
+    # Prints the terminal PID, or nothing if none was found.
+    find_term_pid() {
+        local pid=$1 parent name
+        while [ -n "$pid" ] && [ "$pid" -gt 1 ]; do
+            parent=$(ps -o ppid= -p "$pid" 2>/dev/null | tr -d ' ')
+            [ -z "$parent" ] && return
+            name=$(basename "$(ps -o comm= -p "$parent" 2>/dev/null)")
+            if [[ "$name" =~ ^(Terminal|iTerm2?|alacritty|kitty|wezterm-gui|ghostty)$ ]]; then
+                echo "$parent"
+                return
+            fi
+            pid=$parent
+        done
+    }
+
+    term_pid=$(find_term_pid $$)
+
+    # Inside herdr, the shell is a child of the herdr server (a daemon under
+    # launchd), so the walk never reaches the terminal. Walk up from the
+    # attached herdr client instead.
+    if [ -z "$term_pid" ] && [ -n "$HERDR_ENV" ]; then
+        for client_pid in $(pgrep -x herdr); do
+            [ "$(ps -o ppid= -p "$client_pid" | tr -d ' ')" = 1 ] && continue
+            term_pid=$(find_term_pid "$client_pid")
+            [ -n "$term_pid" ] && break
+        done
+    fi
 
     # PID -> workspace raw name.
     # TSV output keeps this independent of the JSON payload nesting; a header
     # row, if present, simply never matches the numeric PID.
-    ws_raw=$(omniwmctl query windows --fields pid,workspace --format tsv 2>/dev/null \
+    [ -n "$term_pid" ] && ws_raw=$(omniwmctl query windows --fields pid,workspace --format tsv 2>/dev/null \
         | awk -F'\t' -v p="$term_pid" '$1 == p { print $2; exit }')
 
     # workspace raw name -> "number:display-name"
@@ -96,24 +111,32 @@ fi
 
 # --------------------------------------------------------------------------
 # Send the notification.
-# -sender spoofs the bundle identifier so macOS uses Claude's icon instead of
-# Script Editor's. Requires Claude.app to be installed.
+# terminal-notifier exits non-zero when it cannot deliver (e.g. notifications
+# disabled for it in System Settings), so fall back to osascript in that case.
 # --------------------------------------------------------------------------
+sent=false
 if command -v terminal-notifier &>/dev/null; then
     if [ -n "$subtitle" ]; then
         terminal-notifier -title "Claude Code" -subtitle "$subtitle" \
-            -message "$message" -sender com.anthropic.claudefordesktop
+            -message "$message" &>/dev/null && sent=true
     else
         terminal-notifier -title "Claude Code" -message "$message" \
-            -sender com.anthropic.claudefordesktop
+            &>/dev/null && sent=true
     fi
-else
-    # Fallback: ugly Script Editor icon, but it works.
-    if [ -n "$subtitle" ]; then
-        osascript -e "display notification \"${message}\" with title \"Claude Code\" subtitle \"${subtitle}\""
+fi
+if ! $sent; then
+    # Pass values as argv so quotes in the message cannot break the script.
+    osascript - "$message" "$subtitle" <<'APPLESCRIPT' &>/dev/null
+on run argv
+    set msg to item 1 of argv
+    set sub to item 2 of argv
+    if sub is "" then
+        display notification msg with title "Claude Code"
     else
-        osascript -e "display notification \"${message}\" with title \"Claude Code\""
-    fi
+        display notification msg with title "Claude Code" subtitle sub
+    end if
+end run
+APPLESCRIPT
 fi
 
 exit 0
