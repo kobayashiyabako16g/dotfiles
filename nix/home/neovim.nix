@@ -74,7 +74,11 @@
     extraPackages = (with pkgs.lsp; [
       gopls
       node
-    ]) ++ [ pkgs.rust-analyzer ];
+    ]);
+
+    # extraPackages は PATH 末尾に追加されるため、rustup の rust-analyzer プロキシ
+    # (コンポーネント未導入だと自身にフォールバックして無限再帰する) に負ける。先頭に置く
+    extraWrapperArgs = [ "--prefix" "PATH" ":" "${pkgs.rust-analyzer}/bin" ];
 
     initLua = ''
       require("config")
