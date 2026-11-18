@@ -20,6 +20,10 @@
       resize-overlay = "never";
       gtk-toolbar-style = "flat";
 
+      # Keyboard
+      # 左 Option を Alt として送る（nvim の <M-*> 用）。右 Option は特殊文字入力用に残す
+      macos-option-as-alt = "left";
+
       # Font
       font-family = "Hack Nerd Font Mono";
       font-style = "Regular";
