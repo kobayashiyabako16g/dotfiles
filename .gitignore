@@ -52,3 +52,10 @@ config/zed/*
 !config/zed/settings.json
 !config/zed/keymap.json
 !config/zed/tasks.json
+
+# OmniWM は config dir にバックアップや同梱シェル (shell/default) を書き出すため設定とユーザーウィジェットのみ管理
+config/omniwm/*
+!config/omniwm/settings.toml
+!config/omniwm/shell/
+config/omniwm/shell/*
+!config/omniwm/shell/widgets/
