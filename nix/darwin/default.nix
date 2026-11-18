@@ -5,6 +5,8 @@
 
   nixpkgs = {
     hostPlatform = "aarch64-darwin";
+    # claude-agent-acp (codecompanion の ACP アダプタ) が依存する claude-code のみ unfree を許可する
+    config.allowUnfreePredicate = pkg: builtins.elem (pkg.pname or (builtins.parseDrvName pkg.name).name) [ "claude-code" ];
     overlays = [
       (import ../overlays.nix)
       # vimPlugins.blink-lib / vimPlugins.blink-cmp (v2) を差し替える
