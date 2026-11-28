@@ -2,9 +2,25 @@
 set -euo pipefail
 
 DOTFILES_DIR="$HOME/dotfiles"
-HOSTNAME="macbook"
+HOSTNAME_FILE="/etc/nix/darwin-hostname"
 
 echo "▶️ Starting dotfiles setup..."
+
+# ホスト名 (端末ごとに一意な名前を Git 管理外のファイルに保存する)
+if [ -s "$HOSTNAME_FILE" ]; then
+  HOSTNAME="$(tr -d '[:space:]' < "$HOSTNAME_FILE")"
+  echo "✅ Hostname: $HOSTNAME"
+else
+  default_hostname="$(scutil --get LocalHostName 2>/dev/null || true)"
+  while :; do
+    read -rp "Hostname for this Mac [${default_hostname}]: " HOSTNAME
+    HOSTNAME="${HOSTNAME:-$default_hostname}"
+    [[ "$HOSTNAME" =~ ^[A-Za-z0-9-]+$ ]] && break
+    echo "⚠️ Use only letters, digits and hyphens."
+  done
+  sudo mkdir -p "$(dirname "$HOSTNAME_FILE")"
+  echo "$HOSTNAME" | sudo tee "$HOSTNAME_FILE" >/dev/null
+fi
 
 # Nix
 if ! command -v nix >/dev/null; then

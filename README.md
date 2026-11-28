@@ -16,6 +16,14 @@ xcode-select --install
 ./install.sh
 ```
 
+On first run, `install.sh` asks for this Mac's hostname and saves it to `/etc/nix/darwin-hostname` (outside of Git).
+Use a unique name per Mac so machines on the same network don't conflict. To change it later:
+
+```sh
+echo <hostname> | sudo tee /etc/nix/darwin-hostname
+sudo darwin-rebuild switch --flake ~/dotfiles#<hostname> --impure
+```
+
 To pass a GitHub access token to Nix, write it to `/etc/nix/access-tokens.conf` (outside of Git).
 
 ```sh

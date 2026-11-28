@@ -15,6 +15,19 @@ map("n", "<Leader>o", function()
     vim.cmd.Neotree "focus"
   end
 end, { desc = "Toggle Explorer Focus" })
+-- ###########
+-- Window split (AstroNvim風)
+-- `\` は <LocalLeader> と衝突するため、横分割は <Leader>\ にする
+-- ###########
+map("n", "|", "<Cmd>vsplit<CR>", { desc = "Vertical Split" })
+map("n", "<Leader>\\", "<Cmd>split<CR>", { desc = "Horizontal Split" })
+
+-- 分割ウィンドウ間の移動
+map("n", "<C-h>", "<C-w>h", { desc = "Move to Left Split" })
+map("n", "<C-j>", "<C-w>j", { desc = "Move to Below Split" })
+map("n", "<C-k>", "<C-w>k", { desc = "Move to Above Split" })
+map("n", "<C-l>", "<C-w>l", { desc = "Move to Right Split" })
+
 -- Tab navigation
 map("n", "]t", "<cmd>tabnext<CR>", { desc = "Next Tab" })
 map("n", "[t", "<cmd>tabprevious<CR>", { desc = "Previous Tab" })
